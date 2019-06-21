@@ -4,3 +4,6 @@ Build/
 
 # VSCode configs
 .vscode/
+
+# VS configs
+.vs/
