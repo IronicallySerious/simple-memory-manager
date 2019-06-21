@@ -2,25 +2,29 @@
 
 constexpr unsigned int CHUNK_LINK_SIZE;
 
-class SimpleMemoryManager
+class SimpleMemoryPoolManager
 {
 private:
-	unsigned char **m_Pool;
+	unsigned char **m_Pools;
 	unsigned char *m_Head;
-	unsigned int m_PoolSize;
+	unsigned int m_PoolsSize;
 
 	unsigned int m_ChunkSize;
-	unsigned int m_ChunkNumber;
+	unsigned int m_NumChunksInPool;
 
-	bool IncrementBlockStock();
+	unsigned char *AllocateMemoryBlock();
+	bool IncrementPoolArray();
+
+	unsigned char *GetNext(unsigned char *Chunk);
+	void SetNext(unsigned char * Current, unsigned char *NewNext);
 
 public:
-	SimpleMemoryManager();
-	~SimpleMemoryManager();
-	SimpleMemoryManager(SimpleMemoryManager &) = delete;
-	SimpleMemoryManager &operator=(SimpleMemoryManager &) = delete;
-	SimpleMemoryManager &operator=(SimpleMemoryManager &&) = delete;
-	SimpleMemoryManager(SimpleMemoryManager &&) = delete;
+	SimpleMemoryPoolManager();
+	~SimpleMemoryPoolManager();
+	SimpleMemoryPoolManager(SimpleMemoryPoolManager &) = delete;
+	SimpleMemoryPoolManager &operator=(SimpleMemoryPoolManager &) = delete;
+	SimpleMemoryPoolManager &operator=(SimpleMemoryPoolManager &&) = delete;
+	SimpleMemoryPoolManager(SimpleMemoryPoolManager &&) = delete;
 
 	bool Init(unsigned int ChunkSize, unsigned int ChunkNumber);
 	void *Alloc();
@@ -28,7 +32,7 @@ public:
 	void Destruct();
 
 	inline unsigned int GetChunkSize() const { return m_ChunkSize; }
-	inline unsigned int GetChunkNumber() const { return m_ChunkNumber; }
+	inline unsigned int GetChunkNumber() const { return m_NumChunksInPool; }
 
 protected:
 };
